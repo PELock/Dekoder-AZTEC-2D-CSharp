@@ -38,7 +38,7 @@ Uruchom konsolę pakietów NuGet (Package Manager Console):
 PM> Install-Package AZTecDecoder
 ```
 
-####Użycie dekodera AZTEC 2D w JavaScript dla C#
+####Użycie dekodera AZTEC 2D w JavaScript dla C# (CSharp)
 
 ```csharp
 //
