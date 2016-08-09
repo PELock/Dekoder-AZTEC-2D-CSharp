@@ -1,4 +1,4 @@
-#Dekoder Kodu AZTEC 2D z Dowodu Rejestracyjnego dla C#
+#Dekoder Kodu AZTEC 2D z Dowodu Rejestracyjnego dla C# (CSharp)
 
 Oferujemy Państwu usługę Web API pozwalającą zdekodować dane z kodu AZTEC 2D zapisanego w dowodach rejestracyjnych pojazdów samochodowych.
 
