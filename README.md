@@ -99,7 +99,8 @@ private void AZTecDecoderTest()
     {
         MessageBox.Show(DecodedTextFile.ToString());
     }
-}```
+}
+```
 
 Bartosz Wójcik
 https://www.pelock.com | http://www.dekoderaztec.pl
