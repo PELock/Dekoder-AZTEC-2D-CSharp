@@ -1,4 +1,4 @@
-#Dekoder Kodu AZTEC 2D z Dowodu Rejestracyjnego dla C# (CSharp)
+# Dekoder Kodu AZTEC 2D z Dowodu Rejestracyjnego dla C# (CSharp)
 
 Oferujemy Państwu usługę Web API pozwalającą zdekodować dane z kodu AZTEC 2D zapisanego w dowodach rejestracyjnych pojazdów samochodowych.
 
@@ -8,7 +8,7 @@ Nasza biblioteka dekoduje dane z dowodu rejestracyjnego, zapisane w postaci kodu
 
 https://www.pelock.com/pl/produkty/dekoder-aztec
 
-##Gdzie znajdzie zastosowanie Dekoder AZTec?
+## Gdzie znajdzie zastosowanie Dekoder AZTec?
 
 Dekoder AZTec może przydać się firmom i instytucjom, które pragną zautomatyzować proces ręcznego wprowadzania danych z dowodów rejestracyjnych i zastąpić go poprzez wykorzystanie naszej biblioteki programistycznej, która potrafi rozpoznać i rozkodowac kody AZTEC 2D bezpośrednio ze zdjęć dowodów rejestracyjnych lub zeskanowanych już kodów (wykorzystując skaner QR / AZTEC 2D).
 
@@ -18,7 +18,7 @@ Dekoder AZTec dostepny jest w trzech edycjach. Każda wersja posiada inne cechy 
 
 ![Dekodowanie kodu AZTEC 2D do formatu JSON](https://www.pelock.com/img/pl/produkty/dekoder-aztec/dekodowanie-kodu-aztec-2d-do-json.png)
 
-###Wersja Web API
+### Wersja Web API
 
 Jest to najbardziej zaawansowana edycja Dekodera AZTec, ponieważ umożliwia precyzyjne rozpoznawanie i dekodowanie kodów AZTEC 2D bezpośrednio ze zdjęć oraz obrazków zapisanych w formatach PNG lub JPG.
 
@@ -28,7 +28,7 @@ Rozumiemy potrzeby naszych klientów oraz problemy wynikające z rozpoznawnia rz
 
 Przy tworzeniu naszego rozwiązania wzieliśmy wszystkie te czynniki pod uwagę i w efekcie nasz algorytm radzi sobie znakomicie z rozpoznawaniem kodów AZTEC 2D ze zdjęć z wszelkiego rodzaju zniekształceniami, uszkodzeniami i niedoskonałościami. Znacznie przewyższa pod względem funkcjonowania dostępne na rynku biblioteki rozpoznawnia kodów AZTEC 2D takie jak np. ZXing.
 
-####Instalacja
+#### Instalacja
 
 Preferowany sposób instalacji biblioteki poprzez [NuGet](https://docs.nuget.org/consume/package-manager-console).
 
@@ -40,7 +40,7 @@ PM> Install-Package AZTecDecoder
 
 Paczka dostępna na https://www.nuget.org/packages/AZTecDecoder/
 
-####Użycie dekodera AZTEC 2D dla C# (CSharp)
+#### Użycie dekodera AZTEC 2D dla C# (CSharp)
 
 ```csharp
 //
