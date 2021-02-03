@@ -282,6 +282,8 @@ Temporary Items
 
 # Windows
 # =========================
+.exe
+.bat
 
 # Windows image file caches
 Thumbs.db

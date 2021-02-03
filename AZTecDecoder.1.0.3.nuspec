@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>AZTecDecoder</id>
-        <version>1.0.2</version>
+        <version>1.0.3</version>
         <title>Dekoder AZTEC 2D</title>
         <authors>Bartosz Wójcik</authors>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -11,13 +11,21 @@
 Nasza biblioteka dekoduje dane z dowodu rejestracyjnego, zapisane w postaci kodu obrazkowego tzw. kod aztec. Dekodowane są wszystkie wymienione pola w dowodzie rejestracyjnym pojazdu.
 
 https://www.pelock.com/pl/produkty/dekoder-aztec</description>
-        <summary>Dekoder Kodu AZTEC 2D z Dowodu Rejestracyjnego dla C# (Web API).</summary>
+        <summary>Dekoder Kodu AZTEC 2D z Samochodowego Dowodu Rejestracyjnego dla C# (Web API). Dekodowanie zeskanowanych danych oraz dekodowanie danych ze zdjęć samego kodu z rozpoznawaniem obrazu.</summary>
         <copyright>PELock LLC</copyright>
         <language>pl-PL</language>
-        <tags>aztec2d,aztec-decoder,aztec</tags>
+        <tags>aztec2d,aztec-decoder,aztec,pojazd,samochod,car,vehicleid,dowod,rejestracja,aztecdecoder,dekoderaztec,dekoder</tags>
         <frameworkAssemblies>
-            <frameworkAssembly assemblyName="System" targetFramework=".NETFramework2.0" />
+            <frameworkAssembly assemblyName="System" />
         </frameworkAssemblies>
+
+        <projectUrl>https://www.pelock.com/pl/produkty/dekoder-aztec</projectUrl>
+        <icon>images\aztec-decoder-icon-128.png</icon>
+
+        <dependencies>
+          <group targetFramework=".NETFramework2.0" />
+        </dependencies>
+
     </metadata>
     <files>
         <file src="src\bin\Release\AZTecDecoder.dll" target="lib\net20\AZTecDecoder.dll" />
@@ -30,5 +38,7 @@ https://www.pelock.com/pl/produkty/dekoder-aztec</description>
         <file src="src\System.Json\JsonType.cs" target="src\System.Json\JsonType.cs" />
         <file src="src\System.Json\JsonValue.cs" target="src\System.Json\JsonValue.cs" />
         <file src="src\AZTecDecoder.cs" target="src\AZTecDecoder.cs" />
+
+        <file src="images\aztec-decoder-icon-128.png" target="images\" />
     </files>
 </package>
