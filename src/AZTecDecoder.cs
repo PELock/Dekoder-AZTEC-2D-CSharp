@@ -6,7 +6,7 @@
 // Jezyk          : C#
 // Zaleznosci     : Biblioteka System.Json z projektu Mono (https://github.com/mono/mono/tree/master/mcs/class/System.Json/System.Json)
 // Autor          : Bartosz Wójcik (support@pelock.com)
-// Strona domowa  : http://www.dekoderaztec.pl | https://www.pelock.com
+// Strona domowa  : https://www.dekoderaztec.pl | https://www.pelock.com
 //
 ////////////////////////////////////////////////////////////////////////////////
 
