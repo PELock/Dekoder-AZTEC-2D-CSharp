@@ -2,21 +2,23 @@
 //
 // Dekoder kodow AZTEC 2D z dowodow rejestracyjnych interfejs Web API
 //
-// Wersja         : AZTecDecoder v1.0
+// Wersja         : AZTecDecoder v1.1.0
 // Jezyk          : C#
-// Zaleznosci     : Biblioteka System.Json z projektu Mono (https://github.com/mono/mono/tree/master/mcs/class/System.Json/System.Json)
+// Zaleznosci     : System.Text.Json (JSON), System.Net.Http (HTTP)
 // Autor          : Bartosz Wójcik (support@pelock.com)
 // Strona domowa  : https://www.dekoderaztec.pl | https://www.pelock.com
 //
 ////////////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.Text;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
-using System.Net;
-using System.Json;
-//using System.Windows.Forms;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text.Json.Nodes;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace PELock
 {
@@ -25,15 +27,18 @@ namespace PELock
     /// </summary>
     public class AZTecDecoder
     {
-        /// <summary>
-        /// string domyslna koncowka WebApi
-        /// </summary>
         private const string API_URL = "https://www.pelock.com/api/aztec-decoder/v1";
 
-        /// <summary>
-        /// string klucz WebApi do uslugi AZTecDecoder
-        /// </summary>
-        private string _apiKey;
+        private static readonly HttpClient SharedHttpClient = CreateHttpClient();
+
+        private readonly string _apiKey;
+
+        private static HttpClient CreateHttpClient()
+        {
+            var client = new HttpClient();
+            client.Timeout = TimeSpan.FromMinutes(2);
+            return client;
+        }
 
         /// <summary>
         /// Inicjalizacja klasy AZTecDecoder
@@ -49,17 +54,25 @@ namespace PELock
         /// wyjsciowej tablicy w formacie JSON.
         /// </summary>
         /// <param name="text">Odczytana wartosc z kodem AZTEC2D w formie ASCII</param>
-        /// <returns>Tablica z odczytanymi wartosciami lub null jesli blad</returns>
-        public JsonValue DecodeText(string text)
+        /// <returns>Drzewo JSON lub null jesli blad</returns>
+        public JsonNode DecodeText(string text)
         {
-            // parametry
-            var Params = new NameValueCollection
+            return DecodeTextAsync(text, CancellationToken.None).GetAwaiter().GetResult();
+        }
+
+        /// <summary>
+        /// Dekodowanie zaszyfrowanej wartosci tekstowej do
+        /// wyjsciowej tablicy w formacie JSON (asynchronicznie).
+        /// </summary>
+        public Task<JsonNode> DecodeTextAsync(string text, CancellationToken cancellationToken = default)
+        {
+            var parameters = new NameValueCollection
             {
                 ["command"] = "decode-text",
                 ["text"] = text.Trim()
             };
-            
-            return PostRequest(Params);
+
+            return PostRequestAsync(parameters, cancellationToken);
         }
 
         /// <summary>
@@ -68,19 +81,30 @@ namespace PELock
         /// formatu JSON.
         /// </summary>
         /// <param name="textFilePath">Sciezka do pliku z odczytana wartoscia kodu AZTEC2D</param>
-        /// <returns>Tablica z odczytanymi wartosciami lub null jesli blad</returns>
-        public JsonValue DecodeTextFromFile(string textFilePath)
+        /// <returns>Drzewo JSON lub null jesli blad</returns>
+        public JsonNode DecodeTextFromFile(string textFilePath)
         {
-            // czy plik istnieje?
-            if (!File.Exists(textFilePath)) return null;
+            return DecodeTextFromFileAsync(textFilePath, CancellationToken.None).GetAwaiter().GetResult();
+        }
 
-            // odczytaj zawartosc pliku
+        /// <summary>
+        /// Dekodowanie zaszyfrowanej wartosci tekstowej z pliku (asynchronicznie).
+        /// </summary>
+        public async Task<JsonNode> DecodeTextFromFileAsync(string textFilePath, CancellationToken cancellationToken = default)
+        {
+            if (!File.Exists(textFilePath))
+            {
+                return null;
+            }
+
             string text = File.ReadAllText(textFilePath);
 
-            // czy tresc jest pusta?
-            if (!String.IsNullOrEmpty(text)) return null;
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                return null;
+            }
 
-            return DecodeText(text);
+            return await DecodeTextAsync(text, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -89,169 +113,150 @@ namespace PELock
         /// w formacie JSON.
         /// </summary>
         /// <param name="imageFilePath">Sciezka do obrazka z kodem AZTEC2D</param>
-        /// <returns>Tablica z odczytanymi wartosciami lub null jesli blad</returns>
-        public JsonValue DecodeImageFromFile(string imageFilePath)
+        /// <returns>Drzewo JSON lub null jesli blad</returns>
+        public JsonNode DecodeImageFromFile(string imageFilePath)
         {
-            // parametry
-            var Params = new NameValueCollection
+            return DecodeImageFromFileAsync(imageFilePath, CancellationToken.None).GetAwaiter().GetResult();
+        }
+
+        /// <summary>
+        /// Dekodowanie z obrazka (asynchronicznie).
+        /// </summary>
+        public Task<JsonNode> DecodeImageFromFileAsync(string imageFilePath, CancellationToken cancellationToken = default)
+        {
+            var parameters = new NameValueCollection
             {
                 ["command"] = "decode-image",
                 ["image"] = imageFilePath
             };
 
-            return PostRequest(Params);
+            return PostRequestAsync(parameters, cancellationToken);
         }
 
         /// <summary>
         /// Logowanie do uslugi w celu sprawdzenia statusu licencji
         /// </summary>
         /// <returns>Dane licencyjne lub null jesli blad</returns>
-        public JsonValue Login()
+        public JsonNode Login()
         {
-            // parametry
-            var Params = new NameValueCollection
+            return LoginAsync(CancellationToken.None).GetAwaiter().GetResult();
+        }
+
+        /// <summary>
+        /// Logowanie (asynchronicznie).
+        /// </summary>
+        public Task<JsonNode> LoginAsync(CancellationToken cancellationToken = default)
+        {
+            var parameters = new NameValueCollection
             {
                 ["command"] = "login"
             };
 
-            return PostRequest(Params);
+            return PostRequestAsync(parameters, cancellationToken);
         }
 
         /// <summary>
         /// Wysyla zapytanie POST do serwera WebApi
         /// </summary>
         /// <param name="paramsArray">Tablica z parametrami dla zapytania POST</param>
-        /// <returns>Tablica z odczytanymi wartosciami lub null jesli blad</returns>
-        public JsonValue PostRequest(NameValueCollection paramsArray)
+        /// <returns>Drzewo JSON lub null jesli blad</returns>
+        public JsonNode PostRequest(NameValueCollection paramsArray)
+        {
+            return PostRequestAsync(paramsArray, CancellationToken.None).GetAwaiter().GetResult();
+        }
+
+        /// <summary>
+        /// Wysyla zapytanie POST do serwera WebApi (asynchronicznie).
+        /// </summary>
+        public async Task<JsonNode> PostRequestAsync(NameValueCollection paramsArray, CancellationToken cancellationToken = default)
         {
             try
             {
-                // czy jest ustawiony klucz Web API?
-                if (String.IsNullOrEmpty(_apiKey))
+                if (string.IsNullOrEmpty(_apiKey))
                 {
                     return null;
                 }
 
-                // do parametrow dodaj klucz Web API
                 paramsArray["key"] = _apiKey;
 
-                // odpowiedz
-                string json = String.Empty;
+                string json;
 
                 if (paramsArray["image"] == null)
                 {
-                    // utworz klase do komunikacji sieciowej
-                    var client = new WebClient();
-
-                    // wyslij parametry jako zapytanie POST
-                    var response = client.UploadValues(API_URL, "POST", paramsArray);
-
-                    // odpowiedz to zakodowany w UTF-8 ciag JSON
-                    json = Encoding.UTF8.GetString(response);
+                    json = await PostFormUrlEncodedAsync(API_URL, paramsArray, cancellationToken).ConfigureAwait(false);
                 }
                 else
                 {
-                    json = UploadFileEx(API_URL, paramsArray["image"], "image", paramsArray);
+                    json = await UploadFileMultipartAsync(API_URL, paramsArray["image"], "image", paramsArray, cancellationToken).ConfigureAwait(false);
                 }
 
-                if (String.IsNullOrEmpty(json))
+                if (string.IsNullOrEmpty(json))
                 {
                     return null;
                 }
 
-                // deserializuj obiekt JSON do wygodnej w uzyciu tablicy result["klucz"]["element"] itd.
-                var result = JsonValue.Parse(json);
-
-                return result;
-
+                try
+                {
+                    return JsonNode.Parse(json);
+                }
+                catch (System.Text.Json.JsonException)
+                {
+                    return null;
+                }
             }
-            catch (Exception ex)
+            catch
             {
-                //MessageBox.Show(ex.ToString());
-
-                // w przypadku bledu komunikacji zwroc null
                 return null;
             }
         }
 
-        /// <summary>
-        /// Wysyla zapytanie POST do serwera z zalaczonym plikiem
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="filePath">Sciezka do pliku</param>
-        /// <param name="fileFormName">Nazwa pola z plikiem</param>
-        /// <param name="formFields">Dodatkowe wartosci do przeslania</param>
-        /// <returns></returns>
-        public static string UploadFileEx(string url, string filePath, string fileFormName, NameValueCollection formFields)
+        private static async Task<string> PostFormUrlEncodedAsync(string url, NameValueCollection form, CancellationToken cancellationToken)
         {
-            string boundary = "----------------------------" + DateTime.Now.Ticks.ToString("x");
-
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.ContentType = "multipart/form-data; boundary=" + boundary;
-            request.Method = "POST";
-            request.KeepAlive = true;
-
-            Stream memStream = new MemoryStream();
-
-            var boundarybytes = Encoding.ASCII.GetBytes("\r\n--" + boundary + "\r\n");
-            var endBoundaryBytes = Encoding.ASCII.GetBytes("\r\n--" + boundary + "--");
-            
-            string formdataTemplate = "\r\n--" + boundary + "\r\nContent-Disposition: form-data; name=\"{0}\";\r\n\r\n{1}";
-
-            if (formFields != null)
+            var pairs = new List<KeyValuePair<string, string>>();
+            foreach (string key in form.AllKeys)
             {
-                foreach (string key in formFields.Keys)
+                if (key == null)
                 {
-                    string formitem = string.Format(formdataTemplate, key, formFields[key]);
-                    byte[] formitembytes = Encoding.UTF8.GetBytes(formitem);
-                    memStream.Write(formitembytes, 0, formitembytes.Length);
+                    continue;
                 }
+
+                pairs.Add(new KeyValuePair<string, string>(key, form[key] ?? string.Empty));
             }
 
-            string headerTemplate = "Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\n" +
-                "Content-Type: application/octet-stream\r\n\r\n";
-
-            memStream.Write(boundarybytes, 0, boundarybytes.Length);
-            var header = string.Format(headerTemplate, fileFormName, Path.GetFileName(filePath));
-            var headerbytes = Encoding.UTF8.GetBytes(header);
-
-            memStream.Write(headerbytes, 0, headerbytes.Length);
-
-            using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            using (var content = new FormUrlEncodedContent(pairs))
+            using (var response = await SharedHttpClient.PostAsync(url, content, cancellationToken).ConfigureAwait(false))
             {
-                var buffer = new byte[1024];
-                var bytesRead = 0;
+                return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            }
+        }
 
-                while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) != 0)
+        /// <summary>
+        /// Wysyla multipart/form-data z ta sama kolejnoscia pol co poprzednia implementacja (wszystkie pola tekstowe, potem plik).
+        /// </summary>
+        private static async Task<string> UploadFileMultipartAsync(string url, string filePath, string fileFormName, NameValueCollection formFields, CancellationToken cancellationToken)
+        {
+            using (var content = new MultipartFormDataContent())
+            {
+                foreach (string key in formFields.AllKeys)
                 {
-                    memStream.Write(buffer, 0, bytesRead);
-                }
-            }
-
-            memStream.Write(endBoundaryBytes, 0, endBoundaryBytes.Length);
-            request.ContentLength = memStream.Length;
-
-            using (Stream requestStream = request.GetRequestStream())
-            {
-                memStream.Position = 0;
-                byte[] tempBuffer = new byte[memStream.Length];
-                memStream.Read(tempBuffer, 0, tempBuffer.Length);
-                memStream.Close();
-                requestStream.Write(tempBuffer, 0, tempBuffer.Length);
-            }
-
-            using (var response = request.GetResponse())
-            {
-                using (var stream2 = response.GetResponseStream())
-                {
-                    if (stream2 != null)
+                    if (key == null)
                     {
-                        var reader2 = new StreamReader(stream2);
-
-                        return reader2.ReadToEnd();
+                        continue;
                     }
 
-                    return String.Empty;
+                    content.Add(new StringContent(formFields[key] ?? string.Empty), key);
+                }
+
+                using (var fileStream = File.OpenRead(filePath))
+                {
+                    var fileContent = new StreamContent(fileStream);
+                    fileContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                    content.Add(fileContent, fileFormName, Path.GetFileName(filePath));
+
+                    using (var response = await SharedHttpClient.PostAsync(url, content, cancellationToken).ConfigureAwait(false))
+                    {
+                        return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    }
                 }
             }
         }
