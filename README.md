@@ -5,7 +5,7 @@
 
 Oferujemy Państwu usługę Web API pozwalającą zdekodować dane z kodu AZTEC 2D zapisanego w dowodach rejestracyjnych pojazdów samochodowych.
 
-![Kod AZTEC 2D zapisany w formie obrazkowej w dowodzie rejestracyjnym pojazdu](https://raw.githubusercontent.com/PELock/Dekoder-AZTEC-2D-CSharp/main/images/dowod-rejestracyjny-kod-aztec-2d.jpg)
+![Kod AZTEC 2D zapisany w formie obrazkowej w dowodzie rejestracyjnym pojazdu](https://raw.githubusercontent.com/PELock/Dekoder-AZTEC-2D-CSharp/refs/heads/master/images/dowod-rejestracyjny-kod-aztec-2d.jpg)
 
 Nasza biblioteka dekoduje dane z dowodu rejestracyjnego, zapisane w postaci kodu obrazkowego tzw. kod aztec. Dekodowane są wszystkie wymienione pola w dowodzie rejestracyjnym pojazdu.
 
@@ -19,7 +19,7 @@ Dekoder AZTec może przydać się firmom i instytucjom, które pragną zautomaty
 
 Dekoder AZTec dostepny jest w trzech edycjach. Każda wersja posiada inne cechy i inne możliwości dekodowania. Wersja oparta o Web API jako jedyna posiada możliwość rozpoznawania i dekodowania danych bezpośrednio ze zdjęć i obrazków. Pozostałe wersje do dekodowania wymagają już odczytanego kodu w postaci tekstu (np. ze skanera).
 
-![Dekodowanie kodu AZTEC 2D do formatu JSON](https://raw.githubusercontent.com/PELock/Dekoder-AZTEC-2D-CSharp/main/images/dekodowanie-kodu-aztec-2d-do-json.png)
+![Dekodowanie kodu AZTEC 2D do formatu JSON](https://raw.githubusercontent.com/PELock/Dekoder-AZTEC-2D-CSharp/refs/heads/master/images/dekodowanie-kodu-aztec-2d-do-json.png)
 
 ## Porównanie edycji
 
@@ -52,12 +52,12 @@ Dla ułatwienia szybkiego wdrożenia, paczki instalacyjne Dekodera AZTec został
 
 | Repozytorium | Język | Instalacja | Paczka | GitHub |
 | ------------ | ----- | ---------- | ------ | ------ |
-| ![Centralne Repozytorium Maven](https://raw.githubusercontent.com/PELock/Dekoder-AZTEC-2D-CSharp/main/images/repo-maven.png) | Java | Dodaj wpis do pliku `pom.xml`<br />`<dependency>`<br />`  <groupId>com.pelock</groupId>`<br />`  <artifactId>AZTecDecoder</artifactId>`<br />`  <version>1.0.0</version>`<br />`</dependency>` | [Maven](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.pelock%22) | [Źródła](https://github.com/PELock/Dekoder-AZTEC-2D-Java)
-| ![Repozytorium NPM](https://raw.githubusercontent.com/PELock/Dekoder-AZTEC-2D-CSharp/main/images/repo-npm.png) | JavaScript, TypeScript | `npm install aztec-decoder` | [NPM](https://www.npmjs.com/package/aztec-decoder) | [Źródła](https://github.com/PELock/Dekoder-AZTEC-2D-JavaScript)
-| ![Repozytorium NuGet](https://raw.githubusercontent.com/PELock/Dekoder-AZTEC-2D-CSharp/main/images/repo-nuget.png) | C#, VB.NET, .NET | `PM> Install-Package AZTecDecoder` | [NuGet](https://www.nuget.org/packages/AZTecDecoder/) | [Źródła](https://github.com/PELock/Dekoder-AZTEC-2D-CSharp)
-| ![Repozytorium Packagist dla Composer](https://raw.githubusercontent.com/PELock/Dekoder-AZTEC-2D-CSharp/main/images/repo-packagist-composer.png) | PHP | Dodaj do sekcji `require` w twoim pliku `composer.json` linijkę `"pelock/aztec-decoder": "*"` | [Packagist](https://packagist.org/packages/pelock/aztec-decoder) | [Źródła](https://github.com/PELock/Dekoder-AZTEC-2D-PHP)
-| ![Repozytorium PyPI dla Python](https://raw.githubusercontent.com/PELock/Dekoder-AZTEC-2D-CSharp/main/images/repo-pypi.png) | Python | `pip install aztecdecoder` | [PyPi](https://pypi.org/project/aztecdecoder/) | [Źródła](https://github.com/PELock/Dekoder-AZTEC-2D-Python)
-| ![Repozytorium Cargo dla Rust](https://raw.githubusercontent.com/PELock/Dekoder-AZTEC-2D-CSharp/main/images/repo-cargo.png) | Rust | `cargo add aztec-decoder` | [Crates.io](https://crates.io/crates/aztec-decoder) | [Źródła](https://github.com/PELock/Dekoder-AZTEC-2D-Rust)
+| ![Centralne Repozytorium Maven](https://raw.githubusercontent.com/PELock/Dekoder-AZTEC-2D-CSharp/refs/heads/master/images/repo-maven.png) | Java | Dodaj wpis do pliku `pom.xml`<br />`<dependency>`<br />`  <groupId>com.pelock</groupId>`<br />`  <artifactId>AZTecDecoder</artifactId>`<br />`  <version>1.0.0</version>`<br />`</dependency>` | [Maven](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.pelock%22) | [Źródła](https://github.com/PELock/Dekoder-AZTEC-2D-Java)
+| ![Repozytorium NPM](https://raw.githubusercontent.com/PELock/Dekoder-AZTEC-2D-CSharp/refs/heads/master/images/repo-npm.png) | JavaScript, TypeScript | `npm install aztec-decoder` | [NPM](https://www.npmjs.com/package/aztec-decoder) | [Źródła](https://github.com/PELock/Dekoder-AZTEC-2D-JavaScript)
+| ![Repozytorium NuGet](https://raw.githubusercontent.com/PELock/Dekoder-AZTEC-2D-CSharp/refs/heads/master/images/repo-nuget.png) | C#, VB.NET, .NET | `PM> Install-Package AZTecDecoder` | [NuGet](https://www.nuget.org/packages/AZTecDecoder/) | [Źródła](https://github.com/PELock/Dekoder-AZTEC-2D-CSharp)
+| ![Repozytorium Packagist dla Composer](https://raw.githubusercontent.com/PELock/Dekoder-AZTEC-2D-CSharp/refs/heads/master/images/repo-packagist-composer.png) | PHP | Dodaj do sekcji `require` w twoim pliku `composer.json` linijkę `"pelock/aztec-decoder": "*"` | [Packagist](https://packagist.org/packages/pelock/aztec-decoder) | [Źródła](https://github.com/PELock/Dekoder-AZTEC-2D-PHP)
+| ![Repozytorium PyPI dla Python](https://raw.githubusercontent.com/PELock/Dekoder-AZTEC-2D-CSharp/refs/heads/master/images/repo-pypi.png) | Python | `pip install aztecdecoder` | [PyPi](https://pypi.org/project/aztecdecoder/) | [Źródła](https://github.com/PELock/Dekoder-AZTEC-2D-Python)
+| ![Repozytorium Cargo dla Rust](https://raw.githubusercontent.com/PELock/Dekoder-AZTEC-2D-CSharp/refs/heads/master/images/repo-cargo.png) | Rust | `cargo add aztec-decoder` | [Crates.io](https://crates.io/crates/aztec-decoder) | [Źródła](https://github.com/PELock/Dekoder-AZTEC-2D-Rust)
 
 #### Instalacja dla C# i .NET
 

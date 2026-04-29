@@ -4,9 +4,9 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>AZTecDecoder</RootNamespace>
     <AssemblyName>AZTecDecoder</AssemblyName>
-    <Version>1.1.0</Version>
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
-    <FileVersion>1.1.0.0</FileVersion>
+    <Version>1.1.1</Version>
+    <AssemblyVersion>1.1.1.0</AssemblyVersion>
+    <FileVersion>1.1.1.0</FileVersion>
     <Nullable>disable</Nullable>
     <LangVersion>latest</LangVersion>
     <Authors>Bartosz Wójcik</Authors>
@@ -15,6 +15,7 @@
     <Description>Dekoder kodu AZTEC 2D z dowodu rejestracyjnego (Web API).</Description>
     <PackageProjectUrl>https://www.pelock.com/pl/produkty/dekoder-aztec</PackageProjectUrl>
     <PackageTags>aztec2d;aztec-decoder;aztec;dekoder</PackageTags>
+    <PackageIcon>aztec-decoder-icon-128.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
@@ -25,6 +26,7 @@
 
   <ItemGroup>
     <None Include="..\README.md" Pack="true" PackagePath="\" />
+    <None Include="..\images\aztec-decoder-icon-128.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>
